@@ -1,0 +1,35 @@
+
+docker exec -it -u <use> <name_container> bash
+docker exec -it <name_container> bash //without user
+# enter a specific docker conteiner
+
+docker-compose up -d
+# up all docker containers
+
+docker-compose stop
+# stop all docker containers
+
+docker rm <name_container>
+# remove a specific docker container
+
+docker rm -f $(docker ps -a -q)
+docker rm -f $(docker ps -qa)
+# remove all containers
+
+docker ps -a
+# list all docker containers with id, image (location), command, created, status, ports, names
+
+docker rmi $(docker images | grep "^<none>" | awk "{print $3}")
+# remove orphans images
+
+docker rm $(docker ps -qa -f status=exited)
+# remove just of exited containers
+
+docker rmi -f $(docker images | awk '{print $3, $8}')
+# remove all images
+
+docker history my/image | awk 'NR>1 {print $1}' | xargs docker inspect --format '{{ ((index .ContainerConfig.Cmd ) 0) }}'
+# inspect an image
+
+docker stop $(docker ps -q); docker rm $(docker ps -a -q); docker volume rm $(docker volume ls -q); docker rmi $(docker images -q); docker network rm $(docker network ls -q);
+docker command to clear all
